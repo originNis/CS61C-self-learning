@@ -1,0 +1,3 @@
+gcc hashtable.c philspel.c
+touch testOutput
+cat sampleInput | ./a.exe sampleDictionary > testOutput

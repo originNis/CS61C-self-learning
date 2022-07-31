@@ -1,0 +1,5 @@
+1. ".data" means memory space for const value or data, ".word" means a data tpye like "int" of C,
+".text" means memory space for code content.
+2. The program output 34, which means the 9th term in the fib sequence.
+3. 0x10000010
+4. Just change register t0 and t1 to 3 and 5 saperately.

@@ -1,0 +1,5 @@
+1. Register t2 denotes k.
+2. Register s0 denotes sum.
+3. Register t0 denotes the pointer(index) to the two arrays.
+4. Loop part.
+5. By lw instruction manipulating t0 to access numbers of arrays.

@@ -78,6 +78,27 @@ main:
 f:
     # YOUR CODE GOES HERE!
 
+    # Calling Convention
+    addi sp, sp, -12
+    sw s0, 0(sp)
+    sw s1, 4(sp)
+    sw ra, 8(sp)
+
+    mv s0, a0
+    mv s1, a1
+
+    # s1 = a1 + 4 * (a0 + 3) denotes the address of the element of the output array.
+    addi s0, s0, 3
+    slli s0, s0, 2
+    add s1, s1, s0
+
+    lw a0, 0(s1)
+
+    lw s0, 0(sp)
+    lw s1, 4(sp)
+    lw ra, 8(sp)
+    addi sp, sp, 12
+
     jr ra               # Always remember to jr ra after your function!
 
 print_int:

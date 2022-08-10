@@ -1,51 +1,66 @@
 Exercise 1
 	Scenario 1
-		1. 
-		2.
-		3.
+		1. Because step size in bytes is exactly equal to block size in bytes.
+		2. Zero, because step size equals block size with small cache size decides that the early access will definitely be replaced before the later access wanna hit it.
+		3. Change step size to 1. Because block size equals 8 bytes which means only two ints can be stored in a single block,
+		so step size 1 guarantees that there should be a cache hit every two accesses.
 
 	Scenario 2
-		1.
-		2.
-		3.
-		4.
-		5.
+		1. 2 memory accesses, corresponding to read and write.
+		2. Miss(when read in a single access), hit(when write in a single access), hit, hit.
+		3. According to the above answer, hit rate is 75%.
+		4. Hit rate will approach 1,
+		because cache entirely save the array data after the first iteration since cache size equals array size.
+		5. We split the large array into mutiple small arrays with the size as large as the cache size, 
+		and apply all map functions at once into them instead of applying a single function,
+		AKA outer loop is array elements and inner loop is map functions,
+		so that we don`t need to worry about in later iterations some array elements have been evicted
+		even though we wanna map them which definitely take long time to take them from memory
+		and therefore cause a poor cache performance.
 
 	Scenario 3
-		1.
-		2.
-		3.
-		4.
-		5.
+		1. HR of L1 is 0.5 while HR of L2 is 0. Overall is 0.5
+		2. 32 accesses and 16 misses.
+		3. 16 accesses because every L2 access means a L1 miss.
+		4. repcount. Because L2 cache size equals array size which means L2 will remember the whole array
+		after the first iteration and therefore every L2 access will succeed.
+		5. (1)It has no effect.
+		   (2)HR of L1 will increase but HR of L2 will maintain.
 
 Exercise 2
-	ijk:
-	ikj:
-	jik:
-	jki:
-	kij:
-	kji:
+	ijk: 2.701 Gflop/s
+	ikj: 1.774 Gflop/s
+	jik: 2.698 Gflop/s
+	jki: 24.335 Glop/s
+	kij: 1.811 Gflop/s
+	kji: 22.358 Gflop/s
 
-	1.
-	2.
-	3.
+	1. jki performs best because A and C move with strides 1 while B keep still in the innermost loop
+	which utilize spatical locality best.
+	2. ikj performs worst beacuse C and B move with strides j which don`t care about locality at all.
+	3. The strides should be as small as possible to optimize program performance.
 
 Exercise 3
+	the first is native version and the second is improved version.
 	Part 1
-		blocksize = 20, n = 100: 
-		blocksize = 20, n = 1000: 
-		blocksize = 20, n = 2000: 
-		blocksize = 20, n = 5000: 
-		blocksize = 20, n = 10000: 
+		blocksize = 20, n = 100: 0.003ms vs 0.003ms
+		blocksize = 20, n = 1000: 0.975ms vs 0.554ms
+		blocksize = 20, n = 2000: 4.291ms vs 5.464ms
+		blocksize = 20, n = 5000: 56.879ms vs 36.533ms
+		blocksize = 20, n = 10000: 331.129ms vs 139.359ms
 
-		1.
-		2.
+		1. When the block is large enough(here needs 1000 and more) does the difference occur.
+		2. When the scale is small, accesses are few and only a short time is used so that
+		the advantage is not obvious.
 
 	Part 2
-		blocksize = 50, n = 10000:
-		blocksize = 100, n = 10000:
-		blocksize = 500, n = 10000:
-		blocksize = 1000, n = 10000:
-		blocksize = 5000, n = 10000:
+		blocksize = 50, n = 10000: 351.775ms vs 109.226ms
+		blocksize = 100, n = 10000: 334.007ms vs 92.908ms
+		blocksize = 500, n = 10000: 342.8ms vs 86.367ms
+		blocksize = 1000, n = 10000: 336.673ms vs 114.125ms
+		blocksize = 5000, n = 10000: 339.082ms vs 309.838ms
 
-		1.
+		1. Performance becomes greater first and decreases later.
+		The reason is that when blocksize is too small, Hit rate will increase;
+		on the other hand, when blocksize is too big, Hit time will increase too,
+		both of which will decrease performance.

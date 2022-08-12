@@ -1,0 +1,16 @@
+exercise 1:
+    1. One page is 32 bytes.
+    2. 2 TLB hits and 8 misses, 8 page faults.
+    3. No, because the entry not saved in TLB definitely won`t occur in the page table, 
+    which means a TLB miss is bound to trigger a page fault, otherwise the page table won`t be accessed at all.
+
+exercise 2:
+    Address sequence: 00, 20, 40, 60, 80, 00, 20, 40, 60, 80
+
+exercise 3:
+    Change TLB entries to three.
+
+exercise 4:
+    Px represents different programs, AKA processes.
+    The TLB miss rate is higher because physical memory is shared between different programs that
+    the same VPN may means different PPN, While the camera is in term of a single program.

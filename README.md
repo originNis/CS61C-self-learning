@@ -9,5 +9,5 @@ lab04 √
 lab05 √  
 lab06 √  
 lab07 √  
-lab08 √ 
+lab08 √  
 lab09 √  

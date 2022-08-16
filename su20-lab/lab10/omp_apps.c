@@ -3,7 +3,7 @@
 /* -------------------------------Dot Product------------------------------*/
 double* gen_array(int n) {
   double* array = (double*)malloc(n * sizeof(double));
-  for (int i = 0; i < n; i++) array[i] = drand48();
+  for (int i = 0; i < n; i++) array[i] = (double)(rand() % 100) / 100;
   return array;
 }
 
@@ -25,9 +25,11 @@ double dotp_manual_optimized(double* x, double* y, int arr_size) {
 #pragma omp parallel
   {
 #pragma omp for
-    for (int i = 0; i < arr_size; i++)
-#pragma omp critical
-      global_sum += x[i] * y[i];
+    for (int i = 0; i < arr_size; i++) {
+      double temp = x[i] * y[i];
+      #pragma omp critical
+      global_sum += temp;
+    }
   }
   return global_sum;
 }
@@ -37,9 +39,8 @@ double dotp_reduction_optimized(double* x, double* y, int arr_size) {
   double global_sum = 0.0;
 #pragma omp parallel
   {
-#pragma omp for
+#pragma omp for reduction(+ : global_sum)
     for (int i = 0; i < arr_size; i++)
-#pragma omp critical
       global_sum += x[i] * y[i];
   }
   return global_sum;

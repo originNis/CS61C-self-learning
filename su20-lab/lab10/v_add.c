@@ -16,26 +16,36 @@ void v_add_naive(double* x, double* y, double* z) {
 
 // Edit this function (Method 1) 
 void v_add_optimized_adjacent(double* x, double* y, double* z) {
-     #pragma omp parallel
+    #pragma omp parallel
 	{
-		for(int i=0; i<ARRAY_SIZE; i++)
+		int threadNum = omp_get_num_threads();
+		int threadId = omp_get_thread_num();
+		for(int i=ARRAY_SIZE%threadId; i<ARRAY_SIZE; i+=threadNum)
 			z[i] = x[i] + y[i];
 	}
 }
 
 // Edit this function (Method 2) 
 void v_add_optimized_chunks(double* x, double* y, double* z) {
-          #pragma omp parallel
+    #pragma omp parallel
 	{
-		for(int i=0; i<ARRAY_SIZE; i++)
-			z[i] = x[i] + y[i];
+		int threadNum = omp_get_num_threads();
+		int chunk = ARRAY_SIZE/threadNum;
+		int threadId = omp_get_thread_num();
+		if(threadId != threadNum - 1) {
+			for(int i=chunk*threadId; i<chunk*threadId; i++)
+				z[i] = x[i] + y[i];
+		} else {
+			for(int i = chunk*threadId; i<ARRAY_SIZE; i++)
+				z[i] = x[i] + y[i];
+		}
 	}
 }
 
 double* gen_array(int n) {
 	double* array = (double*) malloc(n*sizeof(double));
 	for(int i=0; i<n; i++)
-		array[i] = drand48();
+		array[i] = (double)(rand() % 100) / 100;
 	return array;
 }
 
@@ -62,13 +72,13 @@ int main() {
 	// Test framework that sweeps the number of threads and times each run
 	double start_time, run_time;
 	int num_threads = omp_get_max_threads();	
-
+	printf("%d\n", num_threads);
 
 	for(int i=1; i<=num_threads; i++) {
 		omp_set_num_threads(i);		
-	  start_time = omp_get_wtime();
+		start_time = omp_get_wtime();
 		for(int j=0; j<REPEAT; j++)
-			v_add_optimized_adjacent(x,y,z);
+		 	v_add_optimized_adjacent(x,y,z);
 		run_time = omp_get_wtime() - start_time;
     if(!verify(x,y, v_add_optimized_adjacent)){
       printf("v_add optimized adjacent does not match oracle\n");
@@ -95,7 +105,7 @@ int main() {
 		omp_set_num_threads(i);		
 		start_time = omp_get_wtime();
 		for(int j=0; j<REPEAT; j++)
-			v_add_naive(x,y,z);
+		 	v_add_naive(x,y,z);
 		run_time = omp_get_wtime() - start_time;
   	printf("Naive: %d thread(s) took %f seconds\n",i,run_time);
   }

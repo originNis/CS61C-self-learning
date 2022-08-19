@@ -3,7 +3,7 @@
 Up to now:  
 project 1 √  
 project 2 √  
-project 3 √  
+project 3 (wrong implementation)  
 lab02 √  
 lab03 √  
 lab04 √  

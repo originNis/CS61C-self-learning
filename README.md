@@ -3,6 +3,7 @@
 Up to now:  
 project 1 √  
 project 2 √  
+project 3 √  
 lab02 √  
 lab03 √  
 lab04 √  
